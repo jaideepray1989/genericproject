@@ -53,7 +53,7 @@ HashTable::HashTable(unsigned int arraySize)
     assert((arraySize & (arraySize - 1)) == 0);   // Must be a power of 2
     m_arraySize = arraySize;
     m_entries = new Entry[arraySize];
-    Clear();
+    clear();
 }
 
 

@@ -3,6 +3,8 @@
 #include "lockless/LockFreeQueue.cpp"
 #include "lockless/LockFreeStack.cpp"
 #include "lockless/LockFreeHashMap.cpp"
+#include "withlocks/WriteRarelyReadManyMap.cpp"
+#include "withlocks/ThreadSafeQueue2.cpp"
 using namespace std;
 
 
@@ -32,5 +34,22 @@ int main() {
     cout<<hashTable->get(15);
     cout<<hashTable->get(16);
 
+    WRRMMap<int,int> *map = new WRRMMap<int,int>();
+    map->set(10,-69);
+    map->set(10,9);
+    cout<<map->get(10);
+
+    lock_free_queue<int> *b1 = new lock_free_queue<int>();
+    threadsafe_data_queue<int> * b2 = new threadsafe_data_queue<int>();
+    for(int i=0;i<10;i++)
+    {
+        b1->push(i);
+        b2->push(i);
+    }
+
+    for(int i=0;i<10;i++)
+    {
+        cout<< *( b1->pop().get() )<<" : "<< *(b2->wait_and_pop().get()) << " | ";
+    }
     return 0;
 }
