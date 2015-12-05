@@ -8,7 +8,6 @@ private:
     struct node {
         std::shared_ptr<T> data;
         node *next;
-
         node() : next(nullptr) { }
     };
 

@@ -65,5 +65,11 @@ int main() {
     auto y = *(hlfs->pop().get());
     cout<<y;
 
+    lock_free_stack_with_ref_count<int>* ref_lfs = new lock_free_stack_with_ref_count<int>();
+    ref_lfs->push(10);
+    ref_lfs->push(11);
+    ref_lfs->push(12);
+    auto z = *(ref_lfs->pop().get());
+    cout<<z;
     return 0;
 }
