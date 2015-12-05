@@ -5,10 +5,9 @@
 #include "lockless/LockFreeHashMap.cpp"
 #include "withlocks/WriteRarelyReadManyMap.cpp"
 #include "withlocks/ThreadSafeQueue2.cpp"
+#include "lockless/LockFreeStackWithRefCount.cpp"
+#include "lockless/LockFreeStackWithHazardPointers.cpp"
 using namespace std;
-
-
-
 
 int main() {
     threadsafe_queue<int> *tq = new threadsafe_queue<int>();
@@ -47,9 +46,24 @@ int main() {
         b2->push(i);
     }
 
-    for(int i=0;i<10;i++)
-    {
-        cout<< *( b1->pop().get() )<<" : "<< *(b2->wait_and_pop().get()) << " | ";
-    }
+//    for(int i=0;i<10;i++)
+//    {
+//        cout<< *( b1->pop().get() )<<" : "<< *(b2->wait_and_pop().get()) << " | ";
+//    }
+
+    lock_free_stack_with_ref_count<int> * rlfs = new lock_free_stack_with_ref_count<int>();
+    rlfs->push(10);
+    rlfs->push(11);
+    rlfs->push(12);
+    auto x = *(rlfs->pop().get());
+    cout<<x;
+
+    lock_free_stack_with_hazard_pointers<int> * hlfs = new lock_free_stack_with_hazard_pointers<int>();
+    hlfs->push(10);
+    hlfs->push(11);
+    hlfs->push(12);
+    auto y = *(hlfs->pop().get());
+    cout<<y;
+
     return 0;
 }
